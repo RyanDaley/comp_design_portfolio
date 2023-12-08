@@ -1,21 +1,17 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
     My Blog
 {% endblock %}
 
+{% block css_files %}
+ <link rel="stylesheet" href="{% static "blog/index.css" %}" />
+{% endblock %}
 {% block content %}
-    <header id="main-navigation">
-        <h1>
-            <a hred="">Ryan's Computation Design</a>
-        </h1>
-        <nav>
-            <a href="">All Posts</a>
-        </nav>
-    </header>
     <section id="welcome">
         <header>
-            <img src="" alt="Ryan - The Author of this Blog" />
+            <img src="{% static "blog/images/IMG_8038-3.jpg" %}" alt="Ryan - The Author of this Blog" />
             <h2>Ryan's Blog</h2>
         </header>
         <p>I believe that the construction industry needs data driven decision making to increase efficiency and make a more sustainable future.</p>
@@ -24,17 +20,7 @@
         <h2>My latest projects</h2>
 
         <ul>
-            <li>
-                <article class="post">
-                    <a href="">
-                        <img src="" alt="Nonplanar 3d Printing" />
-                        <div class="post__content">
-                            <h3>Nonplanar 3D Printing</h3>
-                            <p>Printing on a textile formwork to enable nonplanar printing</p>
-                        </div>
-                    </a>
-                </article>
-            </li>
+            {% include "blog/includes/post.html" %}
         </ul>
     </section>
     <section id="about">
