@@ -6,7 +6,7 @@ posts = [
         "slug": "coral-house",
         "image": "houseRendering.png",
         "author": "Ryan Daley",
-        "data": date(2020, 7, 21),
+        "date": date(2020, 7, 21),
         "title": "Coral House",
         "excerpt": "An exploration into coral growth algorithms and their applications in architectural design.",
         "content": """The Coral House is an exploration into differential growth algorithms for architecture.
@@ -20,7 +20,7 @@ posts = [
         "slug": "chalice-pavilion",
         "image": "04.jpg",
         "author": "Ryan Daley",
-        "data": date(2020, 7, 21),
+        "date": date(2020, 7, 21),
         "title": "Chalice Pavilion",
         "excerpt": "a 2-Story concrete structure that is supported by columns designed as shells",
         "content": """The goal was to design a 2-Story concrete structure that is supported by columns designed as shells, 
@@ -40,7 +40,7 @@ posts = [
         "slug": "timber-building-system",
         "image": "render_LCRL.jpg",
         "author": "Ryan Daley",
-        "data": date(2022, 10, 15),
+        "date": date(2022, 10, 15),
         "title": "Coral House",
         "excerpt": "design and fabricate a novel timber building system",
         "content": """Collectively, the entire ITECH class of 2021 worked together to design and fabricate a novel timber building 
@@ -57,7 +57,7 @@ posts = [
 
 # Create your views here.
 def get_date(post):
-    return post.get('data')
+    return post['date']
 
 def starting_page(request):
     sorted_posts = sorted(posts, key=get_date)
