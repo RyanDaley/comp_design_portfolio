@@ -21,10 +21,12 @@
         <h2>My latest projects</h2>
 
         <ul>
-            {% for post in posts %}
+            {% for project in projects %}
                 {% include "blog/includes/post.html" %}
             {% endfor %}
         </ul>
+
+        <p>Total Number of Projects {{ total_number_of_projects }} </p>
     </section>
     <section id="about">
         <h2>What I do</h2>
