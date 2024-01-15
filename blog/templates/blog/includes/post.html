@@ -3,7 +3,7 @@
 <li>
     <article class="project">
         <a href="{{ project.get_absolute_url }}">
-            <img src="{% static "blog/images/"|add:post.image %}" alt="{{ project.title }}" />
+            <img src="{% static "blog/images/"|add:project.image_name %}" alt="{{ project.title }}" />
             <div class="post__content">
                 <h3>{{ project.title }}</h3>
                 <p>

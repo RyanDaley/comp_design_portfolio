@@ -11,24 +11,22 @@ def get_date(post):
     return post['date']
 
 def starting_page(request):
-    projects = Project.objects.all().order_by("title")
+    latest_projects = projects = Project.objects.all().order_by("-date")[:3] #django creates one long SQL querry based on this line, better for performance
     num_projects = projects.count()
     return render(request, "blog/index.html", {
-        "projects": projects,
+        "projects": latest_projects,
         "total_number_of_projects": num_projects
     })
 
 def posts(request):
+    all_posts = Project.objects.all().order_by("-date")
     return render(request, "blog/all-posts.html", {
-        "all_posts": Project.objects.all()
+        "all_posts": all_posts
     })
 
 def project_detail(request, slug):
-    # try:
-    #     project = Project.objects.get(pk=id)
-    # except:
-    #     raise Http404()
     project = get_object_or_404(Project, slug=slug)
     return render(request, "blog/post-detail.html", {
-        "project": project
+        "project": project,
+        "tags": project.tags.all()
     })
