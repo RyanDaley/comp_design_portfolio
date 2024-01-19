@@ -1,8 +1,10 @@
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404
-from django.http import Http404
-from django.views.generic import ListView, DetailView
+from django.http import Http404, HttpResponseRedirect
+from django.urls import reverse
+from django.views.generic import ListView
+from django.views import View
 from datetime import date
 
 from .models import Project
@@ -45,16 +47,36 @@ class AllPostsView(ListView):
 #         "all_posts": all_posts
 #     })
 
-class SinglePostView(DetailView):
-    template_name = "blog/post-detail.html"
-    model = Project
+class SinglePostView(View):
+    def get(self, request, slug):
+        project = Project.objects.get(slug=slug)
+        context = {
+            "project": project,
+            "tags": project.tags.all(),
+            "comment_form": CommentForm(),
+            "comments":project.comments.all().order_by("-id")
+        }
+        return render(request, "blog/post-detail.html", context)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["tags"] = self.object.tags.all()
-        context["comment_form"] = CommentForm()
-        return context
+    def post(self, request, slug):
+        comment_form = CommentForm(request.POST)
+        project = Project.objects.get(slug=slug)
 
+        if(comment_form.is_valid()):
+            comment = comment_form.save(commit=False)
+            comment.project = project
+            comment.save()
+
+            return HttpResponseRedirect(reverse("post-detail-page", args=[slug]))
+        
+        
+        context = {
+            "project": project,
+            "tags": project.tags.all(),
+            "comment_form": CommentForm(),
+            "comments":project.comments.all().order_by("-id")
+        }
+        return render(request, "blog/post-detail.html", context)
 
 # def project_detail(request, slug):
 #     project = get_object_or_404(Project, slug=slug)

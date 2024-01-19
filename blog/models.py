@@ -34,6 +34,9 @@ class Project(models.Model):
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, related_name="projects")
     tags = models.ManyToManyField(Tag)
 
+    def __str__(self):
+        return f"{self.title}"
+
 
     
     def save(self, *args, **kwargs):
