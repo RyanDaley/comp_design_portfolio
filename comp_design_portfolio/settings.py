@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from os import getenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,15 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-kswlwm%lms$a%xv9fwta=-x3v&kclg%tdhpxr7!bq^bkgqykew'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv("IS_DEVELOPMENT", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    getenv("APP_HOST", "127.0.0.1")
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'blog',
+    'storages',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,8 +82,12 @@ WSGI_APPLICATION = 'comp_design_portfolio.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'ryan',
+        'PASSWORD': 'R1y2a3n4',
+        'HOST': 'django-comp-design-portfolio.ct66s8kyw02u.us-west-1.rds.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
@@ -118,14 +126,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS= [
     BASE_DIR / "static"
 ]
 
 MEDIA_ROOT = BASE_DIR / "uploads"
-MEDIA_URL = "/uploads/"
+MEDIA_URL = "/files/"
+
+AWS_STORAGE_BUCKET_NAME = "django-comp-design-portfolio"
+AWS_S3_RREGION_NAME = "us-west-1"
+AWS_ACCESS_KEY_ID = ""
+AWS_SECRET_ACCESS_KEY = ""
+
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+DEFAULT_FILE_STORAGE = ""
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
